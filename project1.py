@@ -3,17 +3,15 @@ import cv2
 
 def test1():
     
-    inputImg = cv2.imread("img2.png", 1)
-    target = cv2.imread("t1-img2.png", 1)
+    inputImg = cv2.imread("img2.png", 0)
+    target = cv2.imread("t1-img2.png", 0)
 
-    cv2.imshow('InputImage', inputImg)
-    cv2.imshow('TargetImage', target)
+    iW, iH = inputImg.shape
+    tw, th = target.shape
 
-
-    matchMap = cv2.matchTemplate(inputImg, target, 1)
-
-    cv2.imshow('MatchingTemplate', matchMap)
-
+    matchMap = np.float64(np.zeros((iW - tw + 1, iH - th + 1)) 
+    cv2.imshow('MatchingMap', matchMap)
+    
 test1()
 
 def closeWin():
