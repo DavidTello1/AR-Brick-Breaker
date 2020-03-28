@@ -2,23 +2,24 @@ import numpy as np
 import cv2
 
 def TemplateMathing(Input, Target, threshold):
-   
+    # Input image GrayScale
     input_gray = cv2.cvtColor(Input, cv2.COLOR_BGR2GRAY)
     W, H = input_gray.shape
 
+    # Target image GrayScale
     target_gray = cv2.cvtColor(Target, cv2.COLOR_BGR2GRAY)
     w, h = target_gray.shape
 
+    # Create empty Matching Map
     matchMap = np.ones(shape=(W-w+1, H-h+1), dtype=float)
-    matchMap = cv2.matchTemplate(Input, Target, 1)
 
-    for x in range(0, W-w+1):
-        for y in range(0, H-h+1):
-            for i in range(0, w+1):
-                for j in range(0,h+1):
-                    matchMap[x][y] += (target_gray[i][j] - input_gray[x+i][j+y])**2
-                    if (matchMap[x][y] < threshold):
-                        cv2.rectangle(Input, (x,y), (x+w, y+h), (255,0,255))
+    for x in range(0, W-w+1): # traverse matchingmap x
+        for y in range(0, H-h+1): # traverse matching map y
+            for i in range(0, w+1): # traverse target x
+                for j in range(0,h+1): # traverse target y
+                    matchMap[x][y] += (target_gray[i][j] - input_gray[x+i][j+y])**2 # sum of squared diferences
+            if (matchMap[x][y] < threshold): # check if pixel is below threshold
+                cv2.rectangle(Input, (x,y), (x+w, y+h), (255,0,255)) # draw rectangle on top of input image
 
 # Load Input and Target Images
 img_input = cv2.imread("img2.png", 1)
