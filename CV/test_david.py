@@ -20,7 +20,7 @@ def TemplateMathing(Input, Target, Threshold):
                     matchMap[x][y] += (target_gray[i][j] - input_gray[x+i][j+y])**2 # sum of squared diferences
 
             if (matchMap[x][y] < Threshold): # check if pixel is below threshold
-                cv2.rectangle(Input, (x, y), (x+w, y+h), (255, 0, 255)) # draw rectangle on top of input image
+                cv2.rectangle(Input, (x, y), (x+w, y+h), (0, 255, 0)) # draw rectangle on top of input image
 
     return matchMap
 
