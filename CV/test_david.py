@@ -13,14 +13,11 @@ def TemplateMathing(Input, Target, Threshold):
     # Create empty Matching Map
     matchMap = np.zeros(shape=(W-w+1, H-h+1), dtype=float)
 
-    for x in range(0, W-w+1): # traverse matchingmap x
-        for y in range(0, H-h+1): # traverse matching map y
-            for i in range(0, w+1): # traverse target x
-                for j in range(0, h+1): # traverse target y
-                    matchMap[x][y] += (target_gray[i][j] - input_gray[x+i][j+y])**2 # sum of squared diferences
+    # sum of squared diferences
+    matchMap[0:W-w+1][0:H-h+1] += (target_gray[0:w+1][0:h+1] - input_gray[(0:W-w+1) + (0:w+1)][(0:H-h+1) + (0:h+1)])**2
 
-            if (matchMap[x][y] < Threshold): # check if pixel is below threshold
-                cv2.rectangle(Input, (x, y), (x+w, y+h), (0, 255, 0)) # draw rectangle on top of input image
+    # if (matchMap[0:W-w+1][0:H-h+1] < Threshold): # check if pixel is below threshold
+    #     cv2.rectangle(Input, (x, y), (x+w, y+h), (0, 255, 0)) # draw rectangle on top of input image
 
     return matchMap
 
