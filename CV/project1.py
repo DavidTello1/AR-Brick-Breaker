@@ -23,9 +23,9 @@ def test1():
             aux += np.square(targetGray[:, :] - inputImgGray[i:i+tw, j:j+tw])
             matchMap[i:j] = np.sum(aux, None, dtype=float)
 
+    #cv2.normalize(matchMap, matchMap, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     matchMap = matchMap / matchMap.max()
     #cv2.normalize(matchMap, matchMap)
-    #cv2.normalize(matchMap, matchMap, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
 
     cv2.imshow("input Image", inputImg)
     cv2.imshow("target Image", target)

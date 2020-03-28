@@ -15,9 +15,15 @@ def TemplateMathing(Input, Target, Threshold):
 
     for x in range(0, W-w+1):
         for y in range(0, H-h+1):
-            matchMap[x][y] = (target_gray[:][:] - input_gray[x:x+w+1][y:y+h+1])**2 # sum of squared diferences
-            if (matchMap[x][y] < Threshold): # check if pixel is below threshold
-                cv2.rectangle(Input, (x, y), (x+w+1, y+h+1), (0, 255, 0)) # draw rectangle on top of input image
+            matchMap[x][y] = np.sum(np.square(target_gray[:, :] - input_gray[x:x+w, y:y+h])) # sum of squared diferences
+            # if (matchMap[x][y] < Threshold): # check if pixel is below threshold
+            #     cv2.rectangle(Input, (x, y), (x+w+1, y+h+1), (0, 255, 0)) # draw rectangle on top of input image
+    matchMap = matchMap / matchMap.max()
+
+    loc = np.where( matchMap < Threshold )
+
+    for pt in zip(*loc[::-1]):
+        cv2.rectangle(Input, pt, (pt[0] + w, pt[1] + h), (0, 255, 255), 2)
 
     return matchMap
 
