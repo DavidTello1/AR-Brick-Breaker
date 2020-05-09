@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Brick_Script : MonoBehaviour
 {
+    public bool destructible = true;
     public int hits = 1;
     public int points = 50;
     public List<Material> materials;
@@ -22,12 +23,17 @@ public class Brick_Script : MonoBehaviour
         gameobj = GameObject.Find("Bottom");
         lives = hits;
 
-        if (hits == 1)
-            color = Random.Range(0, 3);
-        else if (hits == 2)
-            color = Random.Range(3, 6);
-        else if (hits == 3)
-            color = 6;
+        if (!destructible)
+            color = 7;
+        else
+        {
+            if (hits == 1)
+                color = Random.Range(0, 3);
+            else if (hits == 2)
+                color = Random.Range(3, 6);
+            else if (hits == 3)
+                color = 6;
+        }
 
         GetComponent<MeshRenderer>().material = materials[color];
     }
@@ -60,7 +66,8 @@ public class Brick_Script : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        lives--;
+        if (destructible)
+            lives--;
     }
 
     public void Restart()

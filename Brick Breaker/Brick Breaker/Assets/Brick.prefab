@@ -86,7 +86,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6486872835186075609}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f47125ffc18edc344b863c74e93fcd0a, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -104,8 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c2d7099c6367e4fab13075f72cbda1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platform: {fileID: 9021669278829946581, guid: 9804fd7cccc055b4bb5b67170e4e8dfc,
-    type: 3}
+  destructible: 1
   hits: 1
   points: 50
   materials:
@@ -116,4 +115,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: aadd2e191f0950f48aff799345567816, type: 2}
   - {fileID: 2100000, guid: ca5b6867d20c4cc49b6afa39ee2ca7c4, type: 2}
   - {fileID: 2100000, guid: 6b838b1db2a16774d87e0bf951fdb177, type: 2}
+  - {fileID: 2100000, guid: 6d81c9c6cc814d543bdbfa6abd0442f6, type: 2}
   has_powerup: 0
+  lives: 0
