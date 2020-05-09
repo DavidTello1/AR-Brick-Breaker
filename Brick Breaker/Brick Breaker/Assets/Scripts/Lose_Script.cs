@@ -14,6 +14,8 @@ public class Lose_Script : MonoBehaviour
     public int score = 0;
     public int lives = 3;
 
+    bool tapped = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +29,11 @@ public class Lose_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (tapped)
+        {
+            //hide tap to start
+        }
+
         Score.GetComponent<Text>().text = "Score: " + "<color=yellow>" + score + "</color>";
         Lives.GetComponent<Text>().text = "Lives: " + "<color=red>" + lives + "</color>";
 
@@ -47,6 +54,9 @@ public class Lose_Script : MonoBehaviour
 
     private void Restart()
     {
+        // hide game over + final score
+        // hide tap to restart
+
         score = 0;
         lives = 3;
         Ball.GetComponent<Ball_Script>().Respawn();
