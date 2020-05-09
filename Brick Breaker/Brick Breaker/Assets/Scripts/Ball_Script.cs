@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ball_Script : MonoBehaviour
 {
     public float speed = 5f;
+    public float initial_speed;
     Vector3 velocity;
     Vector3 position;
 
@@ -14,6 +15,7 @@ public class Ball_Script : MonoBehaviour
         Respawn();
         velocity = GetComponent<Rigidbody>().velocity;
         position = GetComponent<Transform>().position;
+        initial_speed = speed;
     }
 
     // Update is called once per frame
@@ -23,6 +25,7 @@ public class Ball_Script : MonoBehaviour
 
     public void Respawn()
     {
+        speed = initial_speed;
         transform.position = position;
         velocity = Random.insideUnitCircle.normalized * speed;
     }

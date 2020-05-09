@@ -8,6 +8,7 @@ public class Lose_Script : MonoBehaviour
     public GameObject Score;
     public GameObject Lives;
     public GameObject Ball;
+    public GameObject Platform;
     public GameObject Blocks;
     public List<GameObject> bricks;
 
@@ -60,6 +61,7 @@ public class Lose_Script : MonoBehaviour
         score = 0;
         lives = 3;
         Ball.GetComponent<Ball_Script>().Respawn();
+        Platform.GetComponent<Platform_Script>().Restart();
 
         for (int i = 0; i < bricks.Count; ++i)
         {
