@@ -3815,6 +3815,7 @@ MonoBehaviour:
   Bottom: {fileID: 357064491}
   Ball: {fileID: 1239137487}
   Shield: {fileID: 1909890354}
+  powerups_points: 500
   time_limit: 0
 --- !u!4 &505286273 stripped
 Transform:
@@ -5786,7 +5787,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score: <color=yellow>50</color>'
+  m_Text: 'Score: <color=yellow>0</color>'
 --- !u!222 &800634427
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16170,6 +16171,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2151317899668528635, guid: ac83bc749f600934fa6c49d12951355d,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Score: <color=yellow>0</color>'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac83bc749f600934fa6c49d12951355d, type: 3}

@@ -6,7 +6,7 @@ public class Brick_Script : MonoBehaviour
 {
     public bool destructible = true;
     public int hits = 1;
-    public int points = 50;
+    public int points = 100;
     public List<Material> materials;
     public bool has_powerup = false;
     //public PowerUp powerup;

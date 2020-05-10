@@ -8,12 +8,13 @@ public class Platform_Script : MonoBehaviour
     public GameObject Ball;
     public GameObject Shield;
 
-    public int time_limit;
+    public int powerups_points = 500;
+    public int time_limit = 10;
 
+    bool start_timer = false;
     Vector3 position;
     Vector3 size;
-    bool start_timer = false;
-    int time = 0;
+    float time;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,7 @@ public class Platform_Script : MonoBehaviour
     {
         if (start_timer)
         {
-            //count time
+            time -= Time.deltaTime;
             if (time >= time_limit)
             {
                 start_timer = false;
@@ -40,30 +41,36 @@ public class Platform_Script : MonoBehaviour
     {
         if (collider.gameObject.name == "Bigger")
         {
+            Bottom.GetComponent<Lose_Script>().score += powerups_points;
+            Reset();
             GetComponent<Transform>().localScale = new Vector3(size.x, size.y, 0.05f);
-            start_timer = true;
         }
         else if (collider.gameObject.name == "Smaller")
         {
+            Bottom.GetComponent<Lose_Script>().score += powerups_points;
+            Reset();
             GetComponent<Transform>().localScale = new Vector3(size.x, size.y, 0.02f);
-            start_timer = true;
         }
         else if (collider.gameObject.name == "Extra Life")
         {
+            Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Bottom.GetComponent<Lose_Script>().lives++;
         }
         else if (collider.gameObject.name == "Fast Ball")
         {
+            Bottom.GetComponent<Lose_Script>().score += powerups_points;
+            Reset();
             Ball.GetComponent<Ball_Script>().speed *= 2;
-            start_timer = true;
         }
         else if (collider.gameObject.name == "Slow Ball")
         {
+            Bottom.GetComponent<Lose_Script>().score += powerups_points;
+            Reset();
             Ball.GetComponent<Ball_Script>().speed /= 2;
-            start_timer = true;
         }
         else if (collider.gameObject.name == "Shield")
         {
+            Bottom.GetComponent<Lose_Script>().score += powerups_points;
             //make shield visible
         }
     }
@@ -76,6 +83,8 @@ public class Platform_Script : MonoBehaviour
 
     private void Reset()
     {
+        time = time_limit;
+        start_timer = true;
         GetComponent<Transform>().localScale = size;
         Ball.GetComponent<Ball_Script>().speed = Ball.GetComponent<Ball_Script>().initial_speed;
     }
