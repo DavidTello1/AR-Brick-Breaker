@@ -71,7 +71,7 @@ public class Platform_Script : MonoBehaviour
         else if (collider.gameObject.name == "Shield")
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            //make shield visible
+            Shield.GetComponent<Shield_Script>().Enable();
         }
     }
 

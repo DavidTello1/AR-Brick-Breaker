@@ -22,15 +22,19 @@ public class Lose_Script : MonoBehaviour
 
     bool first = true;
     bool tapped = false;
+    MeshRenderer ceiling;
 
     // Start is called before the first frame update
     void Start()
     {
+        ceiling = GameObject.Find("Ceiling").GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        ceiling.enabled = false;
+
         if (!tapped)
         {
             if (Input.GetKeyDown(KeyCode.Space) == true) //***CHANGE TO TAP SCREEN
@@ -77,11 +81,14 @@ public class Lose_Script : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter()
+    private void OnTriggerEnter(Collider collider)
     {
-        lives--;
-        Ball.GetComponent<Ball_Script>().Respawn();
-        tapped = false;
+        if (collider.gameObject.name == "Ball")
+        {
+            lives--;
+            Ball.GetComponent<Ball_Script>().Respawn();
+            tapped = false;
+        }
     }
 
     private void Restart()

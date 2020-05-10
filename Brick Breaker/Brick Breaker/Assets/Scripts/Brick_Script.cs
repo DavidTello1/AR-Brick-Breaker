@@ -5,15 +5,16 @@ using UnityEngine;
 public class Brick_Script : MonoBehaviour
 {
     public bool destructible = true;
+    public bool random_color = true;
+    public int color = 0;
     public int hits = 1;
     public int points = 100;
     public List<Material> materials;
     public bool has_powerup = false;
-    //public PowerUp powerup;
+    public GameObject PowerUp;
 
     GameObject bottom;
     public int lives;
-    int color;
     bool flag1 = false;
     bool flag2 = false;
     bool flag3 = false;
@@ -28,12 +29,15 @@ public class Brick_Script : MonoBehaviour
             color = 7;
         else
         {
-            if (hits == 1)
-                color = Random.Range(0, 3);
-            else if (hits == 2)
-                color = Random.Range(3, 6);
-            else if (hits == 3)
-                color = 6;
+            if (random_color)
+            {
+                if (hits == 1)
+                    color = Random.Range(0, 3);
+                else if (hits == 2)
+                    color = Random.Range(3, 6);
+                else if (hits == 3)
+                    color = 6;
+            }
         }
 
         GetComponent<MeshRenderer>().material = materials[color];
@@ -62,8 +66,10 @@ public class Brick_Script : MonoBehaviour
 
             if (has_powerup)
             {
-                //create powerup
+                PowerUp.GetComponent<PowerUp_Script>().start = true;
+                PowerUp.transform.position = transform.position;
             }
+
             GetComponent<Renderer>().enabled = false;
             GetComponent<BoxCollider>().enabled = false;
         }
@@ -80,12 +86,20 @@ public class Brick_Script : MonoBehaviour
         flag1 = flag2 = flag3 = false;
         lives = hits;
 
-        if (hits == 1)
-            color = Random.Range(0, 3);
-        else if (hits == 2)
-            color = Random.Range(3, 6);
-        else if (hits == 3)
-            color = 6;
+        if (!destructible)
+            color = 7;
+        else
+        {
+            if (random_color)
+            {
+                if (hits == 1)
+                    color = Random.Range(0, 3);
+                else if (hits == 2)
+                    color = Random.Range(3, 6);
+                else if (hits == 3)
+                    color = 6;
+            }
+        }
 
         GetComponent<MeshRenderer>().material = materials[color];
         GetComponent<Renderer>().enabled = true;

@@ -7,7 +7,7 @@ public class Shield_Script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Disable();
     }
 
     // Update is called once per frame
@@ -19,9 +19,18 @@ public class Shield_Script : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.name == "Ball")
-        {
-            //disable
-        }
+            Disable();
     }
 
+    private void Disable()
+    {
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<BoxCollider>().enabled = false;
+    }
+
+    public void Enable()
+    {
+        GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
+    }
 }

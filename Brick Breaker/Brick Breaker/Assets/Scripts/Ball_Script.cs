@@ -19,8 +19,9 @@ public class Ball_Script : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        transform.position += velocity;
     }
 
     public void Respawn()
