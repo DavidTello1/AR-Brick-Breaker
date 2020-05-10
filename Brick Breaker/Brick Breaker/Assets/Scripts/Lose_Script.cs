@@ -10,29 +10,42 @@ public class Lose_Script : MonoBehaviour
     public GameObject Ball;
     public GameObject Platform;
     public GameObject Blocks;
-    public List<GameObject> bricks;
+
+    public Text Win;
+    public Text GameOver;
+    public Text TapToStart;
+    public Text TapToRestart;
 
     public int score = 0;
     public int lives = 3;
+    public int brick_count = 0;
 
+    bool first = true;
     bool tapped = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        Transform[] blocks = Blocks.GetComponentsInChildren<Transform>();
-        foreach (Transform child in blocks)
-        {
-            bricks.Add(child.gameObject);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (tapped)
+        if (!tapped)
         {
-            //hide tap to start
+            if (Input.GetKeyDown(KeyCode.Space) == true) //***CHANGE TO TAP SCREEN
+            {
+                Ball.GetComponent<Ball_Script>().Tap();
+                tapped = true;
+            }
+        }
+        else
+        {
+            if (first)
+            {
+                TapToStart.enabled = false;
+                first = false;
+            }
         }
 
         Score.GetComponent<Text>().text = "Score: " + "<color=yellow>" + score + "</color>";
@@ -40,10 +53,27 @@ public class Lose_Script : MonoBehaviour
 
         if (lives == 0)
         {
-            //show game over + final score
-            //show tap to restart
-            //if restart
-            Restart();
+            GameOver.enabled = true;
+            TapToRestart.enabled = true;
+
+            if (Input.GetKeyDown(KeyCode.Space) == true) //***CHANGE TO TAP SCREEN
+            {
+                Restart();
+                tapped = false;
+            }
+        }
+
+        if (brick_count == Blocks.transform.childCount)
+        {
+            Win.enabled = true;
+            TapToRestart.enabled = true;
+            Ball.GetComponent<Ball_Script>().speed = 0f;
+
+            if (Input.GetKeyDown(KeyCode.Space) == true) //***CHANGE TO TAP SCREEN
+            {
+                Restart();
+                tapped = false;
+            }
         }
     }
 
@@ -51,22 +81,22 @@ public class Lose_Script : MonoBehaviour
     {
         lives--;
         Ball.GetComponent<Ball_Script>().Respawn();
+        tapped = false;
     }
 
     private void Restart()
     {
-        // hide game over + final score
-        // hide tap to restart
+        GameOver.enabled = false;
+        TapToRestart.enabled = false;
+        Win.enabled = false;
 
         score = 0;
         lives = 3;
+        brick_count = 0;
         Ball.GetComponent<Ball_Script>().Respawn();
         Platform.GetComponent<Platform_Script>().Restart();
 
-        for (int i = 0; i < bricks.Count; ++i)
-        {
-            bricks[i].SetActive(true);
-            bricks[i].GetComponent<Brick_Script>().Restart();
-        }
+        for (int i = 0; i < Blocks.transform.childCount; ++i)
+           Blocks.transform.GetChild(i).GetComponent<Brick_Script>().Restart();
     }
 }

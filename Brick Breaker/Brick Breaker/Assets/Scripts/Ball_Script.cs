@@ -27,6 +27,10 @@ public class Ball_Script : MonoBehaviour
     {
         speed = initial_speed;
         transform.position = position;
+    }
+
+    public void Tap()
+    {
         velocity = Random.insideUnitCircle.normalized * speed;
     }
 }

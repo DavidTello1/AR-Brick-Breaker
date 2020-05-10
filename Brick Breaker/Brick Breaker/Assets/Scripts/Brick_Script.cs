@@ -11,16 +11,17 @@ public class Brick_Script : MonoBehaviour
     public bool has_powerup = false;
     //public PowerUp powerup;
 
-    GameObject gameobj;
+    GameObject bottom;
     public int lives;
     int color;
     bool flag1 = false;
     bool flag2 = false;
+    bool flag3 = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameobj = GameObject.Find("Bottom");
+        bottom = GameObject.Find("Bottom");
         lives = hits;
 
         if (!destructible)
@@ -53,14 +54,18 @@ public class Brick_Script : MonoBehaviour
             color -= 3;
             GetComponent<MeshRenderer>().material = materials[color];
         }
-        else if (lives <= 0)
+        else if (lives == 0 && flag3 == false)
         {
-            gameobj.GetComponent<Lose_Script>().score += points;
+            flag3 = true;
+            bottom.GetComponent<Lose_Script>().score += points;
+            bottom.GetComponent<Lose_Script>().brick_count++;
+
             if (has_powerup)
             {
                 //create powerup
             }
-            gameObject.SetActive(false);
+            GetComponent<Renderer>().enabled = false;
+            GetComponent<BoxCollider>().enabled = false;
         }
     }
 
@@ -72,6 +77,7 @@ public class Brick_Script : MonoBehaviour
 
     public void Restart()
     {
+        flag1 = flag2 = flag3 = false;
         lives = hits;
 
         if (hits == 1)
@@ -82,5 +88,7 @@ public class Brick_Script : MonoBehaviour
             color = 6;
 
         GetComponent<MeshRenderer>().material = materials[color];
+        GetComponent<Renderer>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
     }
 }
