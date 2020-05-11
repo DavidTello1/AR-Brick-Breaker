@@ -39,7 +39,6 @@ public class Brick_Script : MonoBehaviour
                     color = 6;
             }
         }
-
         GetComponent<MeshRenderer>().material = materials[color];
     }
 
@@ -67,6 +66,7 @@ public class Brick_Script : MonoBehaviour
             if (has_powerup)
             {
                 PowerUp.GetComponent<PowerUp_Script>().start = true;
+                PowerUp.GetComponent<BoxCollider>().enabled = true;
                 PowerUp.transform.position = transform.position;
             }
 
@@ -102,7 +102,5 @@ public class Brick_Script : MonoBehaviour
         }
 
         GetComponent<MeshRenderer>().material = materials[color];
-        GetComponent<Renderer>().enabled = true;
-        GetComponent<BoxCollider>().enabled = true;
     }
 }

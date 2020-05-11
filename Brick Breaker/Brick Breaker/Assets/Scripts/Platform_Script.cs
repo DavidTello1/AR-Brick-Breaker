@@ -39,36 +39,36 @@ public class Platform_Script : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.name == "Bigger")
+        if (collider.gameObject == GameObject.Find("Bigger"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Reset();
             GetComponent<Transform>().localScale = new Vector3(size.x, size.y, 0.05f);
         }
-        else if (collider.gameObject.name == "Smaller")
+        else if (collider.gameObject == GameObject.Find("Smaller"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Reset();
             GetComponent<Transform>().localScale = new Vector3(size.x, size.y, 0.02f);
         }
-        else if (collider.gameObject.name == "Extra Life")
+        else if (collider.gameObject == GameObject.Find("Extra Life"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Bottom.GetComponent<Lose_Script>().lives++;
         }
-        else if (collider.gameObject.name == "Fast Ball")
+        else if (collider.gameObject == GameObject.Find("Fast Ball"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Reset();
             Ball.GetComponent<Ball_Script>().speed *= 2;
         }
-        else if (collider.gameObject.name == "Slow Ball")
+        else if (collider.gameObject == GameObject.Find("Slow Ball"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Reset();
             Ball.GetComponent<Ball_Script>().speed /= 2;
         }
-        else if (collider.gameObject.name == "Shield")
+        else if (collider.gameObject == GameObject.Find("Shield"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Shield.GetComponent<Shield_Script>().Enable();

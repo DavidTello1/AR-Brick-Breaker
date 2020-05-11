@@ -18,7 +18,7 @@ public class Shield_Script : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.name == "Ball")
+        if (collider.gameObject == GameObject.Find("Ball"))
             Disable();
     }
 

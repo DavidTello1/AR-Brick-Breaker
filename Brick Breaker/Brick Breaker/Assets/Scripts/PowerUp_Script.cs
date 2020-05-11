@@ -7,8 +7,8 @@ public class PowerUp_Script : MonoBehaviour
     public float speed = 0.001f;
 
     public bool start = false;
-    MeshRenderer meshrend;
-    Vector3 pos;
+    public MeshRenderer meshrend;
+    public Vector3 pos;
 
     // Start is called before the first frame update
     void Start()
@@ -31,13 +31,7 @@ public class PowerUp_Script : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (collider.GetComponent<Lose_Script>())
-            Disable();
-    }
-
-    private void Disable()
+    public void Disable()
     {
         start = false;
         meshrend.enabled = false;

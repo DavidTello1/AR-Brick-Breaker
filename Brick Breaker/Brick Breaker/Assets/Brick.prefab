@@ -108,7 +108,7 @@ MonoBehaviour:
   random_color: 1
   color: 0
   hits: 1
-  points: 50
+  points: 100
   materials:
   - {fileID: 2100000, guid: bd6cefa232b5fe544b31c56dd78db8b9, type: 2}
   - {fileID: 2100000, guid: 11b6717154018c5489c5e062320974f2, type: 2}
@@ -119,4 +119,5 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6b838b1db2a16774d87e0bf951fdb177, type: 2}
   - {fileID: 2100000, guid: 6d81c9c6cc814d543bdbfa6abd0442f6, type: 2}
   has_powerup: 0
+  PowerUp: {fileID: 0}
   lives: 0
