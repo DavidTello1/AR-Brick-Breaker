@@ -4,34 +4,32 @@ using UnityEngine;
 
 public class Ball_Script : MonoBehaviour
 {
-    public float speed = 5f;
+    public float speed = 0.5f;
     public float initial_speed;
-    Vector3 velocity;
-    Vector3 position;
+    GameObject platform;
 
     // Start is called before the first frame update
     void Start()
     {
-        Respawn();
-        velocity = GetComponent<Rigidbody>().velocity;
-        position = GetComponent<Transform>().position;
+        platform = GameObject.Find("Platform");
+        transform.position = new Vector3(platform.transform.position.x + 0.007f, platform.transform.position.y, platform.transform.position.z);
         initial_speed = speed;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        transform.position += velocity;
     }
 
     public void Respawn()
     {
         speed = initial_speed;
-        transform.position = position;
+        transform.position = new Vector3(platform.transform.position.x + 0.007f, platform.transform.position.y, platform.transform.position.z);
     }
 
     public void Tap()
     {
-        velocity = Random.insideUnitCircle.normalized * speed;
+        Vector3 direction = new Vector3(1, 0, 1);
+        GetComponent<Rigidbody>().velocity = direction.normalized * speed;
     }
 }

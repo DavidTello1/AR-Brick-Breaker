@@ -12,15 +12,15 @@ public class Platform_Script : MonoBehaviour
     public int time_limit = 10;
 
     bool start_timer = false;
-    Vector3 position;
     Vector3 size;
     float time;
+    //GameObject target;
 
     // Start is called before the first frame update
     void Start()
     {
-        position = GetComponent<Transform>().position;
         size = GetComponent<Transform>().localScale;
+        //target = GameObject.Find("Platform_Target");
     }
 
     // Update is called once per frame
@@ -35,6 +35,8 @@ public class Platform_Script : MonoBehaviour
                 Reset();
             }
         }
+
+        //transform.position = target.transform.position;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -71,13 +73,12 @@ public class Platform_Script : MonoBehaviour
         else if (collider.gameObject == GameObject.Find("Shield"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            Shield.GetComponent<Shield_Script>().Enable();
+            Shield.GetComponent<Shield_Script>().shown = true;
         }
     }
 
     public void Restart()
     {
-        GetComponent<Transform>().position = position;
         GetComponent<Transform>().localScale = size;
     }
 

@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class Shield_Script : MonoBehaviour
 {
+    public bool shown = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        Disable();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!shown)
+            Disable();
+        else
+            Enable();
     }
 
     private void OnTriggerEnter(Collider collider)
