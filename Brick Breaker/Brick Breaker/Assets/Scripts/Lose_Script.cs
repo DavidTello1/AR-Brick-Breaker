@@ -93,8 +93,9 @@ public class Lose_Script : MonoBehaviour
         }
     }
 
-    private void Restart()
+    public void Restart()
     {
+        tapped = false;
         TapToStart.enabled = true;
         GameOver.enabled = false;
         TapToRestart.enabled = false;
