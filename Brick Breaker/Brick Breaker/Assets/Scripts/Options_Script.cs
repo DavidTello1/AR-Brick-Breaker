@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Options_Script : MonoBehaviour
 {
+    public Sprite mute_sprite;
+    public Sprite unmute_sprite;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -23,6 +26,9 @@ public class Options_Script : MonoBehaviour
 
     public void Mute()
     {
-        //mute
+        if (GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
+            GameObject.Find("Mute").GetComponent<Image>().sprite = unmute_sprite;
+        else if (GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
+            GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
     }
 }

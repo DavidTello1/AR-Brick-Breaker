@@ -20,7 +20,7 @@ public class Lose_Script : MonoBehaviour
     public int lives = 3;
     public int brick_count = 0;
 
-    bool tapped = false;
+    public bool tapped = false;
 
     // Start is called before the first frame update
     void Start()
