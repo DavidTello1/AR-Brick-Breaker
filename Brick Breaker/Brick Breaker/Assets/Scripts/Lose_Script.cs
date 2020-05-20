@@ -36,22 +36,26 @@ public class Lose_Script : MonoBehaviour
             {
                 if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
                 {
-                    Ball.GetComponent<Ball_Script>().Tap();
-                    TapToStart.enabled = false;
+                    if (lives == 0 || brick_count == Blocks.transform.childCount)
+                        Restart();
+                    else
+                    {
+                        Ball.GetComponent<Ball_Script>().Tap();
+                        TapToStart.enabled = false;
+                    }
                 }
             }
         }
+
+        Score.GetComponent<Text>().text = "Score: " + "<color=yellow>" + score + "</color>";
+        Lives.GetComponent<Text>().text = "Lives: " + "<color=red>" + lives + "</color>";
 
         // Game Over
         if (lives == 0)
         {
             GameOver.enabled = true;
             TapToRestart.enabled = true;
-
-            if (Input.GetKeyDown(KeyCode.Space) == true || Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                Restart();
-            }
+            Ball.GetComponent<Ball_Script>().speed = 0f;
         }
 
         // Win
@@ -60,15 +64,7 @@ public class Lose_Script : MonoBehaviour
             Win.enabled = true;
             TapToRestart.enabled = true;
             Ball.GetComponent<Ball_Script>().speed = 0f;
-
-            if (Input.GetKeyDown(KeyCode.Space) == true || Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                Restart();
-            }
         }
-
-        Score.GetComponent<Text>().text = "Score: " + "<color=yellow>" + score + "</color>";
-        Lives.GetComponent<Text>().text = "Lives: " + "<color=red>" + lives + "</color>";
     }
 
     private void OnTriggerEnter(Collider collider)

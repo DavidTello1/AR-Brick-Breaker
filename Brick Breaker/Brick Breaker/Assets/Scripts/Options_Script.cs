@@ -26,9 +26,12 @@ public class Options_Script : MonoBehaviour
 
     public void Mute()
     {
-        if (GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
-            GameObject.Find("Mute").GetComponent<Image>().sprite = unmute_sprite;
-        else if (GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
-            GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
+        //if (GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
+        //    GameObject.Find("Mute").GetComponent<Image>().sprite = unmute_sprite;
+        //else if (GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
+        //    GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
+
+        GameObject.Find("Ball").GetComponent<Ball_Script>().Tap();
+        GameObject.Find("Bottom").GetComponent<Lose_Script>().TapToStart.enabled = false;
     }
 }
