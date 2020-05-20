@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Lose_Script : MonoBehaviour
 {
@@ -20,8 +21,6 @@ public class Lose_Script : MonoBehaviour
     public int lives = 3;
     public int brick_count = 0;
 
-    public bool tapped = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,18 +29,17 @@ public class Lose_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Tap
-        if (!tapped && GetComponent<MeshRenderer>().enabled == true)
+        for (int i = 0; i < Input.touchCount; i++)
         {
-            if (Input.GetKeyDown(KeyCode.Space) == true || Input.GetTouch(0).phase == TouchPhase.Ended)
+            var touch = Input.GetTouch(i);
+            if (touch.phase == TouchPhase.Began)
             {
-                Ball.GetComponent<Ball_Script>().Tap();
-                tapped = true;
+                if (!EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+                {
+                    Ball.GetComponent<Ball_Script>().Tap();
+                    TapToStart.enabled = false;
+                }
             }
-        }
-        else if (tapped)
-        {
-            TapToStart.enabled = false;
         }
 
         // Game Over
@@ -53,7 +51,6 @@ public class Lose_Script : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) == true || Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 Restart();
-                tapped = false;
             }
         }
 
@@ -67,7 +64,6 @@ public class Lose_Script : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) == true || Input.GetTouch(0).phase == TouchPhase.Ended)
             {
                 Restart();
-                tapped = false;
             }
         }
 
@@ -81,7 +77,6 @@ public class Lose_Script : MonoBehaviour
         {
             lives--;
             Ball.GetComponent<Ball_Script>().Respawn();
-            tapped = false;
         }
 
         if (collider.gameObject.transform.IsChildOf(GameObject.Find("PowerUps").transform))
@@ -95,7 +90,6 @@ public class Lose_Script : MonoBehaviour
 
     public void Restart()
     {
-        tapped = false;
         TapToStart.enabled = true;
         GameOver.enabled = false;
         TapToRestart.enabled = false;
