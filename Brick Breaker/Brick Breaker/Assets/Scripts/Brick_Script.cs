@@ -75,9 +75,9 @@ public class Brick_Script : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnCollisionExit(Collision collision)
     {
-        if (destructible)
+        if (collision.gameObject == GameObject.Find("Ball") && destructible)
             lives--;
     }
 
