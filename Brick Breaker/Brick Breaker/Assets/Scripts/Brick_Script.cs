@@ -67,6 +67,7 @@ public class Brick_Script : MonoBehaviour
             {
                 PowerUp.GetComponent<PowerUp_Script>().start = true;
                 PowerUp.GetComponent<BoxCollider>().enabled = true;
+                PowerUp.GetComponent<MeshRenderer>().enabled = true;
                 PowerUp.transform.position = transform.position;
             }
 
@@ -78,10 +79,11 @@ public class Brick_Script : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject == GameObject.Find("Ball") && destructible)
+        if (collision.gameObject == GameObject.Find("Ball"))
         {
-            lives--;
             SoundManagerScript.PlaySoundFX("ball_bounce");
+            if (destructible)
+                lives--;
         }
     }
 

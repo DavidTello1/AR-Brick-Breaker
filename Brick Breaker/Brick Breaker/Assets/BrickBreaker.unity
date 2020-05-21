@@ -4203,6 +4203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mute_sprite: {fileID: 0}
   unmute_sprite: {fileID: 0}
+  mute: 0
 --- !u!114 &459429235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4336,13 +4337,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486747664}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.48119998, y: 0.0035, z: 0.044}
   m_LocalScale: {x: 0.033118427, y: 0.033118427, z: 0.033118427}
   m_Children: []
   m_Father: {fileID: 1034079044}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &486747666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4355,9 +4356,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c337bd081c4bfd24ba08c1169ea76703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.001
+  speed: 0.3
   start: 0
-  meshrend: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
 --- !u!65 &486747667
 BoxCollider:
@@ -4379,7 +4379,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486747664}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5375,6 +5375,16 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8910926649894120862, guid: 4f7f54ed6112e66479da1501b319f0dc,
+        type: 3}
+      propertyPath: has_powerup
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8910926649894120862, guid: 4f7f54ed6112e66479da1501b319f0dc,
+        type: 3}
+      propertyPath: PowerUp
+      value: 
+      objectReference: {fileID: 658006430}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f7f54ed6112e66479da1501b319f0dc, type: 3}
 --- !u!1001 &556010016
@@ -5970,13 +5980,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658006430}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.48119998, y: 0.0035, z: 0.119399995}
   m_LocalScale: {x: 0.033118427, y: 0.033118427, z: 0.033118427}
   m_Children: []
   m_Father: {fileID: 1034079044}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &658006432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5989,9 +5999,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c337bd081c4bfd24ba08c1169ea76703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.001
+  speed: 0.003
   start: 0
-  meshrend: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
 --- !u!65 &658006433
 BoxCollider:
@@ -6013,7 +6022,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658006430}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -6641,13 +6650,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713646085}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.48119998, y: 0.0035, z: -0.08510001}
   m_LocalScale: {x: 0.033118427, y: 0.033118427, z: 0.033118427}
   m_Children: []
   m_Father: {fileID: 1034079044}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &713646087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6660,9 +6669,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c337bd081c4bfd24ba08c1169ea76703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.001
+  speed: 0.3
   start: 0
-  meshrend: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
 --- !u!65 &713646088
 BoxCollider:
@@ -6684,7 +6692,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713646085}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -7702,13 +7710,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832200091}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.48119998, y: 0.0035, z: -0.021600008}
   m_LocalScale: {x: 0.033118427, y: 0.033118427, z: 0.033118427}
   m_Children: []
   m_Father: {fileID: 1034079044}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &832200093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7721,9 +7729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c337bd081c4bfd24ba08c1169ea76703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.001
+  speed: 0.3
   start: 0
-  meshrend: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
 --- !u!65 &832200094
 BoxCollider:
@@ -7745,7 +7752,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832200091}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -10701,6 +10708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mute_sprite: {fileID: 21300000, guid: b83c623886d29874187746fb0a281420, type: 3}
   unmute_sprite: {fileID: 21300000, guid: f7f07ee3aa36e694abc5a1bbe2c4bad5, type: 3}
+  mute: 0
 --- !u!114 &1082266253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12192,6 +12200,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.070968054
       objectReference: {fileID: 0}
+    - target: {fileID: 8910926649894120862, guid: 4f7f54ed6112e66479da1501b319f0dc,
+        type: 3}
+      propertyPath: has_powerup
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8910926649894120862, guid: 4f7f54ed6112e66479da1501b319f0dc,
+        type: 3}
+      propertyPath: PowerUp
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5873659479563501495, guid: 4f7f54ed6112e66479da1501b319f0dc,
         type: 3}
       propertyPath: m_Mass
@@ -12728,13 +12746,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271255799}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.48119998, y: 0.0035, z: -0.14850001}
   m_LocalScale: {x: 0.033118427, y: 0.033118427, z: 0.033118427}
   m_Children: []
   m_Father: {fileID: 1034079044}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &1271255801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12747,9 +12765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c337bd081c4bfd24ba08c1169ea76703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.001
+  speed: 0.3
   start: 0
-  meshrend: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
 --- !u!65 &1271255802
 BoxCollider:
@@ -12771,7 +12788,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271255799}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -18710,13 +18727,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900752298}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.48119998, y: 0.0035, z: -0.20480001}
   m_LocalScale: {x: 0.033118427, y: 0.033118427, z: 0.033118427}
   m_Children: []
   m_Father: {fileID: 1034079044}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &1900752300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18729,9 +18746,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c337bd081c4bfd24ba08c1169ea76703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.001
+  speed: 0.3
   start: 0
-  meshrend: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
 --- !u!65 &1900752301
 BoxCollider:
@@ -18753,7 +18769,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1900752298}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

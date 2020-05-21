@@ -81,7 +81,7 @@ public class Lose_Script : MonoBehaviour
         if (collider.gameObject.transform.IsChildOf(GameObject.Find("PowerUps").transform))
         {
             collider.gameObject.GetComponent<PowerUp_Script>().start = false;
-            collider.gameObject.GetComponent<PowerUp_Script>().meshrend.enabled = false;
+            collider.gameObject.GetComponent<PowerUp_Script>().GetComponent<MeshRenderer>().enabled = false;
             collider.gameObject.GetComponent<PowerUp_Script>().GetComponent<BoxCollider>().enabled = false;
             collider.gameObject.GetComponent<PowerUp_Script>().transform.position = collider.gameObject.GetComponent<PowerUp_Script>().pos;
         }
