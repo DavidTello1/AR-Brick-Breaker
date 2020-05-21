@@ -14,13 +14,13 @@ public class Platform_Script : MonoBehaviour
     bool start_timer = false;
     Vector3 size;
     float time;
-    //GameObject target;
+    GameObject target;
 
     // Start is called before the first frame update
     void Start()
     {
         size = GetComponent<Transform>().localScale;
-        //target = GameObject.Find("Platform_Target");
+        target = GameObject.Find("Platform_Target");
     }
 
     // Update is called once per frame
@@ -36,7 +36,7 @@ public class Platform_Script : MonoBehaviour
             }
         }
 
-        //transform.position = target.transform.position;
+        transform.position = target.transform.position;
     }
 
     private void OnTriggerEnter(Collider collider)
