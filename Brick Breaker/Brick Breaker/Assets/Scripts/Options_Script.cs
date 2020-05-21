@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class Options_Script : MonoBehaviour
 {
-    public Sprite unmute_sprite;
     public Sprite mute_sprite;
-
-    public bool mute;
+    public Sprite unmute_sprite;
 
     GameObject Level;
     GameObject target_level;
@@ -18,7 +16,9 @@ public class Options_Script : MonoBehaviour
     {
         Level = GameObject.Find("Level1");
         target_level = GameObject.Find("Level1_Target");
-        mute = true;
+        
+        if(SoundManagerScript.audioSrc.mute == false) GameObject.Find("Mute").GetComponent<Image>().sprite = unmute_sprite;
+        else GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
     }
 
     // Update is called once per frame
@@ -33,18 +33,17 @@ public class Options_Script : MonoBehaviour
     }
 
     public void Mute()
-    {
+    { 
         if (GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
         {
             GameObject.Find("Mute").GetComponent<Image>().sprite = unmute_sprite;
-            mute = false;
+            SoundManagerScript.audioSrc.mute = false;
         }
         else if (GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
         {
             GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
-            mute = true;
+            SoundManagerScript.audioSrc.mute = true;
         }
-
         //***FOR TESTING
         GameObject.Find("Ball").GetComponent<Ball_Script>().Tap();
         GameObject.Find("Bottom").GetComponent<Lose_Script>().TapToStart.enabled = false;
