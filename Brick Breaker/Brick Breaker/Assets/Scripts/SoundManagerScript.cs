@@ -30,7 +30,6 @@ public class SoundManagerScript : MonoBehaviour
     {
         
     }
-
     public static void PlaySoundFX(string clip)
     {
         switch (clip) {
