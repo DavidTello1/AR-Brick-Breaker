@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class Options_Script : MonoBehaviour
 {
-    public Sprite mute_sprite;
     public Sprite unmute_sprite;
+    public Sprite mute_sprite;
 
-    public bool mute = false;
+    public bool mute;
 
     GameObject Level;
     GameObject target_level;
@@ -18,6 +18,7 @@ public class Options_Script : MonoBehaviour
     {
         Level = GameObject.Find("Level1");
         target_level = GameObject.Find("Level1_Target");
+        mute = false;
     }
 
     // Update is called once per frame
@@ -33,12 +34,12 @@ public class Options_Script : MonoBehaviour
 
     public void Mute()
     {
-        if (GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
+        if (mute == true && GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
         {
             GameObject.Find("Mute").GetComponent<Image>().sprite = unmute_sprite;
             mute = false;
         }
-        else if (GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
+        else if (mute == false && GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
         {
             GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
             mute = true;

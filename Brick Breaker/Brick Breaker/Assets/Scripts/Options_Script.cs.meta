@@ -3,7 +3,9 @@ guid: c777005186750d644b18929c0f4185c7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - mute_sprite: {fileID: 21300000, guid: b83c623886d29874187746fb0a281420, type: 3}
+  - unmute_sprite: {fileID: 21300000, guid: f7f07ee3aa36e694abc5a1bbe2c4bad5, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
