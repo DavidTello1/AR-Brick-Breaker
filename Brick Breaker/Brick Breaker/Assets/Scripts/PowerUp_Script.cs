@@ -28,7 +28,6 @@ public class PowerUp_Script : MonoBehaviour
         }
         else
             meshrend.enabled = false;
-
     }
 
     public void Disable()

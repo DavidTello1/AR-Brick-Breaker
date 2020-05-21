@@ -41,6 +41,8 @@ public class Platform_Script : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        SoundManagerScript.PlaySoundFX("powerup_pick");
+
         if (collider.gameObject == GameObject.Find("Bigger"))
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;

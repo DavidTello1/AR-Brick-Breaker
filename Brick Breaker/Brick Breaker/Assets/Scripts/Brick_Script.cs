@@ -72,13 +72,17 @@ public class Brick_Script : MonoBehaviour
 
             GetComponent<Renderer>().enabled = false;
             GetComponent<BoxCollider>().enabled = false;
+            SoundManagerScript.PlaySoundFX("brick_break");
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject == GameObject.Find("Ball") && destructible)
+        {
             lives--;
+            SoundManagerScript.PlaySoundFX("ball_bounce");
+        }
     }
 
     public void Restart()

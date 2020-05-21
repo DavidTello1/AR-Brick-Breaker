@@ -56,6 +56,7 @@ public class Lose_Script : MonoBehaviour
             GameOver.enabled = true;
             TapToRestart.enabled = true;
             Ball.GetComponent<Ball_Script>().speed = 0f;
+            SoundManagerScript.PlaySoundFX("game_lose");
         }
 
         // Win
@@ -64,6 +65,7 @@ public class Lose_Script : MonoBehaviour
             Win.enabled = true;
             TapToRestart.enabled = true;
             Ball.GetComponent<Ball_Script>().speed = 0f;
+            SoundManagerScript.PlaySoundFX("game_win");
         }
     }
 
@@ -72,6 +74,7 @@ public class Lose_Script : MonoBehaviour
         if (collider.gameObject == Ball)
         {
             lives--;
+            SoundManagerScript.PlaySoundFX("ball_destroyed");
             Ball.GetComponent<Ball_Script>().Respawn();
         }
 

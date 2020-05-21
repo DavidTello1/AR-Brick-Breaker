@@ -39,5 +39,6 @@ public class Ball_Script : MonoBehaviour
     {
         Vector3 direction = new Vector3(-1, 0, 1);
         GetComponent<Rigidbody>().AddForce(direction.normalized * speed);
+        SoundManagerScript.PlaySoundFX("tap");
     }
 }
