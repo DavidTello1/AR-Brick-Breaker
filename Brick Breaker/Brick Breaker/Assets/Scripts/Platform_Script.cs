@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class Platform_Script : MonoBehaviour
 {
-    public GameObject Bottom;
-    public GameObject Ball;
-    public GameObject Shield;
-
-    public int powerups_points = 500;
+    public Vector3 size;
     public int time_limit = 10;
 
     bool start_timer = false;
-    Vector3 size;
     float time;
+
+    GameObject ball;
     GameObject target;
+    GameObject brick;
+
+    float pos_y;
 
     // Start is called before the first frame update
     void Start()
     {
         size = GetComponent<Transform>().localScale;
+
+        ball = GameObject.Find("Ball");
         target = GameObject.Find("Platform_Target");
+        brick = GameObject.Find("Shield_GO");
     }
 
     // Update is called once per frame
@@ -36,47 +39,7 @@ public class Platform_Script : MonoBehaviour
             }
         }
 
-        transform.position = target.transform.position;
-    }
-
-    private void OnTriggerEnter(Collider collider)
-    {
-        SoundManagerScript.PlaySoundFX("powerup_pick");
-
-        if (collider.gameObject == GameObject.Find("Bigger"))
-        {
-            Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            Reset();
-            GetComponent<Transform>().localScale = new Vector3(size.x, size.y, 0.05f);
-        }
-        else if (collider.gameObject == GameObject.Find("Smaller"))
-        {
-            Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            Reset();
-            GetComponent<Transform>().localScale = new Vector3(size.x, size.y, 0.02f);
-        }
-        else if (collider.gameObject == GameObject.Find("Extra Life"))
-        {
-            Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            Bottom.GetComponent<Lose_Script>().lives++;
-        }
-        else if (collider.gameObject == GameObject.Find("Fast Ball"))
-        {
-            Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            Reset();
-            Ball.GetComponent<Ball_Script>().speed *= 2;
-        }
-        else if (collider.gameObject == GameObject.Find("Slow Ball"))
-        {
-            Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            Reset();
-            Ball.GetComponent<Ball_Script>().speed /= 2;
-        }
-        else if (collider.gameObject == GameObject.Find("Shield"))
-        {
-            Bottom.GetComponent<Lose_Script>().score += powerups_points;
-            Shield.GetComponent<Shield_Script>().shown = true;
-        }
+        transform.position = new Vector3(target.transform.position.x, brick.transform.position.y, target.transform.position.z);
     }
 
     public void Restart()
@@ -84,11 +47,11 @@ public class Platform_Script : MonoBehaviour
         GetComponent<Transform>().localScale = size;
     }
 
-    private void Reset()
+    public void Reset()
     {
         time = time_limit;
         start_timer = true;
         GetComponent<Transform>().localScale = size;
-        Ball.GetComponent<Ball_Script>().speed = Ball.GetComponent<Ball_Script>().initial_speed;
+        ball.GetComponent<Ball_Script>().speed = ball.GetComponent<Ball_Script>().initial_speed;
     }
 }

@@ -104,7 +104,7 @@ public class Lose_Script : MonoBehaviour
         for (int i = 0; i < Blocks.transform.childCount; ++i)
         {
            Blocks.transform.GetChild(i).GetComponent<Brick_Script>().Restart();
-           Blocks.transform.GetChild(i).GetComponent<Renderer>().enabled = true;
+           Blocks.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = true;
            Blocks.transform.GetChild(i).GetComponent<BoxCollider>().enabled = true;
         }
     }

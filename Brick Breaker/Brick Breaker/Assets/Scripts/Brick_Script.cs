@@ -71,7 +71,7 @@ public class Brick_Script : MonoBehaviour
                 PowerUp.transform.position = transform.position;
             }
 
-            GetComponent<Renderer>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
             GetComponent<BoxCollider>().enabled = false;
             SoundManagerScript.PlaySoundFX("brick_break");
         }
