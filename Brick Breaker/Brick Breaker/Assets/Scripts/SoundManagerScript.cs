@@ -5,8 +5,8 @@ using UnityEngine;
 public class SoundManagerScript : MonoBehaviour
 {
     public static AudioClip ballBounceSound, ballDestroySound, brickBreakSound,
-                            gameLoseSound, gameWinSound, powerUpSound, tapSound,
-                            gameTheme;
+                            gameLoseSound, gameWinSound, powerUpSound, tapSound;
+                            //gameTheme;
 
     static AudioSource audioSrc;
 
@@ -21,7 +21,7 @@ public class SoundManagerScript : MonoBehaviour
         powerUpSound = Resources.Load<AudioClip>("powerup_pick");
         tapSound = Resources.Load<AudioClip>("tap");
 
-        gameTheme = Resources.Load<AudioClip>("game_theme");
+       // gameTheme = Resources.Load<AudioClip>("game_theme");
 
         audioSrc = GetComponent<AudioSource>();
     }
