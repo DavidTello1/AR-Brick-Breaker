@@ -18,7 +18,7 @@ public class Options_Script : MonoBehaviour
     {
         Level = GameObject.Find("Level1");
         target_level = GameObject.Find("Level1_Target");
-        mute = false;
+        mute = true;
     }
 
     // Update is called once per frame
@@ -34,12 +34,12 @@ public class Options_Script : MonoBehaviour
 
     public void Mute()
     {
-        if (mute == true && GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
+        if (GameObject.Find("Mute").GetComponent<Image>().sprite == mute_sprite)
         {
             GameObject.Find("Mute").GetComponent<Image>().sprite = unmute_sprite;
             mute = false;
         }
-        else if (mute == false && GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
+        else if (GameObject.Find("Mute").GetComponent<Image>().sprite == unmute_sprite)
         {
             GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
             mute = true;
