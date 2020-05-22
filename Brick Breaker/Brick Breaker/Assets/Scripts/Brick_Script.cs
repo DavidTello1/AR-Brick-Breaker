@@ -79,7 +79,7 @@ public class Brick_Script : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject == GameObject.Find("Ball"))
+        if (collision.gameObject == GameObject.Find("Ball") && GameObject.Find("Ball").GetComponent<Ball_Script>().follow == false)
         {
             SoundManagerScript.PlaySoundFX("ball_bounce");
             if (destructible)

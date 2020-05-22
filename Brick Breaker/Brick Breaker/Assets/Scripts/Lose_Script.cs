@@ -38,12 +38,23 @@ public class Lose_Script : MonoBehaviour
                 {
                     if (lives == 0 || brick_count == Blocks.transform.childCount)
                         Restart();
-                    else
+                    else if (Ball.GetComponent<Ball_Script>().follow == true)
                     {
                         Ball.GetComponent<Ball_Script>().Tap();
                         TapToStart.enabled = false;
                     }
                 }
+            }
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (lives == 0 || brick_count == Blocks.transform.childCount)
+                Restart();
+            else if (Ball.GetComponent<Ball_Script>().follow == true)
+            {
+                Ball.GetComponent<Ball_Script>().Tap();
+                TapToStart.enabled = false;
             }
         }
 
@@ -71,7 +82,7 @@ public class Lose_Script : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject == Ball)
+        if (collider.gameObject == Ball && Ball.GetComponent<Ball_Script>().follow == false)
         {
             lives--;
             SoundManagerScript.PlaySoundFX("ball_destroyed");

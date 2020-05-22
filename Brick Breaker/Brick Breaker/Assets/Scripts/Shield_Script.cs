@@ -20,10 +20,10 @@ public class Shield_Script : MonoBehaviour
             Enable();
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnCollisionExit(Collision collision)
     {
-        if (collider.gameObject == GameObject.Find("Ball"))
-            Disable();
+        if (collision.gameObject == GameObject.Find("Ball"))
+            shown = false;
     }
 
     private void Disable()

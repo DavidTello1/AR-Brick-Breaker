@@ -44,8 +44,5 @@ public class Options_Script : MonoBehaviour
             GameObject.Find("Mute").GetComponent<Image>().sprite = mute_sprite;
             SoundManagerScript.audioSrc.mute = true;
         }
-        //***FOR TESTING
-        GameObject.Find("Ball").GetComponent<Ball_Script>().Tap();
-        GameObject.Find("Bottom").GetComponent<Lose_Script>().TapToStart.enabled = false;
     }
 }

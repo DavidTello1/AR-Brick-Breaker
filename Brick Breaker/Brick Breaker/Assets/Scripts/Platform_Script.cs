@@ -14,8 +14,6 @@ public class Platform_Script : MonoBehaviour
     GameObject target;
     GameObject brick;
 
-    float pos_y;
-
     // Start is called before the first frame update
     void Start()
     {

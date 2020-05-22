@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PowerUp_Script : MonoBehaviour
 {
-    public float speed = 0.001f;
+    public float speed = 0.003f;
 
     public bool start = false;
     public Vector3 pos;
@@ -51,14 +51,14 @@ public class PowerUp_Script : MonoBehaviour
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Platform.GetComponent<Platform_Script>().Reset();
-            Platform.GetComponent<Transform>().localScale = new Vector3(Platform.GetComponent<Platform_Script>().size.x, Platform.GetComponent<Platform_Script>().size.y, 0.05f);
+            Platform.GetComponent<Transform>().localScale = new Vector3(Platform.GetComponent<Platform_Script>().size.x, Platform.GetComponent<Platform_Script>().size.y, Platform.GetComponent<Platform_Script>().size.z * 2);
             Disable();
         }
         else if (collider.gameObject == GameObject.Find("Platform") && name == "Smaller")
         {
             Bottom.GetComponent<Lose_Script>().score += powerups_points;
             Platform.GetComponent<Platform_Script>().Reset();
-            Platform.GetComponent<Transform>().localScale = new Vector3(Platform.GetComponent<Platform_Script>().size.x, Platform.GetComponent<Platform_Script>().size.y, 0.02f);
+            Platform.GetComponent<Transform>().localScale = new Vector3(Platform.GetComponent<Platform_Script>().size.x, Platform.GetComponent<Platform_Script>().size.y, Platform.GetComponent<Platform_Script>().size.z / 2);
             Disable();
         }
         else if (collider.gameObject == GameObject.Find("Platform") && name == "Extra Life")
