@@ -30,7 +30,7 @@ public class Platform_Script : MonoBehaviour
         if (start_timer)
         {
             time -= Time.deltaTime;
-            if (time >= time_limit)
+            if (time <= 0)
             {
                 start_timer = false;
                 Reset();

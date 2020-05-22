@@ -22,7 +22,9 @@ public class Ball_Script : MonoBehaviour
     {
         if (follow)
             transform.position = new Vector3(platform.transform.position.x - 0.07f, GameObject.Find("Brick").transform.position.y, platform.transform.position.z);
-
+        else
+            transform.position = new Vector3(transform.position.x, GameObject.Find("Brick").transform.position.y, transform.position.z);
+        
         GetComponent<Rigidbody>().velocity = GetComponent<Rigidbody>().velocity.normalized * (speed / 100);
     }
 

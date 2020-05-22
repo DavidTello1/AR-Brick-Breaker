@@ -108,5 +108,8 @@ public class Brick_Script : MonoBehaviour
         }
 
         GetComponent<MeshRenderer>().material = materials[color];
+
+        GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
     }
 }

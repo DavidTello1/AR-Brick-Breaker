@@ -47,7 +47,7 @@ public class Lose_Script : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (lives == 0 || brick_count == Blocks.transform.childCount)
                 Restart();
@@ -115,8 +115,6 @@ public class Lose_Script : MonoBehaviour
         for (int i = 0; i < Blocks.transform.childCount; ++i)
         {
            Blocks.transform.GetChild(i).GetComponent<Brick_Script>().Restart();
-           Blocks.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = true;
-           Blocks.transform.GetChild(i).GetComponent<BoxCollider>().enabled = true;
         }
     }
 }
