@@ -302,7 +302,7 @@
             function handleZoom(WheelEvent)
             {
                 //ZOOM               
-                zooming += WheelEvent.deltaZ;
+                zooming -= WheelEvent.deltaY/100;
                 
                 console.log("applying zooming");
                 console.log(zooming);
