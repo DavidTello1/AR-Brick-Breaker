@@ -225,15 +225,21 @@
             }
             function handleLoadedModel(modelData)
             {
+                modelVertexNormalBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexNormalBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(modelData.vertexNormals), gl.STATIC_DRAW);
+                modelVertexNormalBuffer.itemSize = 3;
+                modelVertexNormalBuffer.numItems = modelData.vertexNormals.length / 3;
+                
                 modelVertexPosBuffer = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexPosBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, modelData.vertexPositions, gl.STATIC_DRAW);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(modelData.vertexPositions), gl.STATIC_DRAW);
                 modelVertexPosBuffer.itemSize = 3;
                 modelVertexPosBuffer.numItems = modelData.vertexPositions.length / 3;
 
                 modelVertexIndexBuffer = gl.createBuffer();
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
-                gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, modelData.indices, gl.STATIC_DRAW);
+                gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,   new Uint16Array(modelData.indices), gl.STATIC_DRAW);
                 modelVertexIndexBuffer.itemSize = 1;
                 modelVertexIndexBuffer.numItems = modelData.indices.length;
             }
@@ -387,7 +393,8 @@
                     gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexPosBuffer);
                     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, modelVertexPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
                     console.log("drawing model");
-                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);                    
+                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
+                    gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);                    
                 }
 
                 var mvMatrix = mat4.create();
@@ -398,7 +405,7 @@
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
 
-                gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+                
             }       
             
             function webGLStart()
