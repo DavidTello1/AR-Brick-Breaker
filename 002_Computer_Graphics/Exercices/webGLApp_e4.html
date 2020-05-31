@@ -263,25 +263,29 @@
 
             function handleMouseDown(event)
             {
-                mouseDown = true;
+                mouseDown = true;                
+                lastMouseX = event.clientX;
+                lastMouseY = event.clientY; 
+
                 if(event.button == 0)//LEFT BUTTON
                 {//ROTATING
-                
+                    console.log("left button pressed");
+                    return;
                 }           
-                if(event.button == 1)//MID BUTTON
+                else if(event.button == 1)//MID BUTTON
                 {//ZOOM
-                    
+                    console.log("mid button pressed");
+                    return;
                 }              
-                if(event.button == 2)//RIGHT BUTTON
+                else if(event.button == 2)//RIGHT BUTTON
                 {//PANNING
-                    
+                    console.log("right button pressed");
+                    return;
                 }     
-                lastMouseX = event.clientX;
-                lastMouseY = event.clientY;     
             }
             function handleMouseMove(event) 
             {
-                if(!mouseDown) return;
+                if(mouseDown == false) return;
 
                 if(event.button == 0)//LEFT BUTTON
                 {//ROTATING
@@ -298,12 +302,15 @@
 
                     lastMouseX = newX;
                     lastMouseY = newY;
-                }
-                if(event.button == 1)
-                {//ZOOM
+                    console.log("applying rotation");
                     return;
                 }
-                if(event.button == 2)//RIGHT BUTTON
+                else if(event.button == 1)
+                {//ZOOM
+                    console.log("applying zooming");
+                    return;
+                }
+                else if(event.button == 2)//RIGHT BUTTON
                 {//PANNING
                     var newX = event.clientX;
                     var newY = event.clientY;
@@ -318,25 +325,31 @@
 
                     lastMouseX = newX;
                     lastMouseY = newY;
+                    console.log("applying panning");
+                    return;
                 }
             }
             function handleMouseUp(event)
             {
                 mouseDown = false;
-                if(event.button == 0)//LEFT BUTTON
-                {//ROTATING
-                    
-                }
-                if(event.button == 1)//MID BUTTON
-                {//ZOOM
-                    
-                }
-                if(event.button == 2)//RIGHT BUTTON
-                {//PANNING
-                   
-                }
                 lastMouseX = null;
                 lastMouseY = null;
+
+                if(event.button == 0)//LEFT BUTTON
+                {//ROTATING
+                    console.log("left button released");
+                    return;
+                }
+                else if(event.button == 1)//MID BUTTON
+                {//ZOOM
+                    console.log("mid button released");
+                    return;
+                }
+                else if(event.button == 2)//RIGHT BUTTON
+                {//PANNING
+                    console.log("right button released");
+                    return;
+                }
             }
             function renderingLoop()
             {
@@ -367,13 +380,11 @@
                 gl.clearColor(0.0, 0.0, 0.0, 1.0);
                 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-                var index = 0;
-
                 var pMatrix = mat4.create();
                 mat4.perspective(50, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
                 
-                var mvMatrix = mat4.create();
-                mat4.identity(mvMatrix);
+                gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+
                 ///////////////////////////////////////////////////////////////////////////////////
                 gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -381,16 +392,15 @@
                 gl.bindBuffer(gl.ARRAY_BUFFER, triangleRGBBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleRGBBuffer.itemSize, gl.FLOAT, false, 0, 0);
                 
-                var mMatrix = mat4.create();
-                mat4.identity(mMatrix);
-                mat4.translate(mMatrix, [0.0, 1.25, -9.0]);  
-                mvMatrix += mMatrix;
+                var mvMatrix = mat4.create();
+                mat4.identity(mvMatrix);
+                mat4.translate(mvMatrix, [0.0, 1.25, -9.0]);  
+
+                mvMatrix = mat4.multiply(mvMatrix, rotMat);
                 
-                index += triangleVertexPositionBuffer.numItems;
+                gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
-                //gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
-                
-                //gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+                gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
                 ////////////////////////////////////////////////////////////////////////////////////
                 gl.bindBuffer(gl.ARRAY_BUFFER, rottriangleVertexPositionBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, rottriangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -398,16 +408,15 @@
                 gl.bindBuffer(gl.ARRAY_BUFFER, triangleCMYBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleCMYBuffer.itemSize, gl.FLOAT, false, 0, 0);
                 
-                var mMatrix = mat4.create();
-                mat4.identity(mMatrix);
-                mat4.translate(mMatrix, [0.0, -1.0, -9.0]);  
-                mvMatrix += mMatrix;
+                var mvMatrix = mat4.create();
+                mat4.identity(mvMatrix);
+                mat4.translate(mvMatrix, [0.0, -1.0, -9.0]);  
+
+                mvMatrix = mat4.multiply(mvMatrix, rotMat);
                 
-                index += rottriangleVertexPositionBuffer.numItems;
+                gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
-                //gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
-                
-                //gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+                gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
                 //////////////////////////////////////////////////////////////////////////////////////
                 gl.bindBuffer(gl.ARRAY_BUFFER, rotQuadVertexPosBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, rotQuadVertexPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -415,34 +424,28 @@
                 gl.bindBuffer(gl.ARRAY_BUFFER, quadColorPosBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, quadColorPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
                 
-                var mMatrix = mat4.create();
-                mat4.identity(mMatrix);
-                mat4.translate(mMatrix, [-3.25, 0.0, -9.0]);
-                mvMatrix += mMatrix;
+                var mvMatrix = mat4.create();
+                mat4.identity(mvMatrix);
+                mat4.translate(mvMatrix, [-3.25, 0.0, -9.0]);
+
+                mvMatrix = mat4.multiply(mvMatrix, rotMat);
+                            
+                gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
-                index += rotQuadVertexPosBuffer.numItems;
-                
-                //gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
-                
-                //gl.drawArrays(gl.TRIANGLE_STRIP, 0, rotQuadVertexPosBuffer.numItems);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, rotQuadVertexPosBuffer.numItems);
                 //////////////////////////////////////////////////////////////////////////////////////
                 gl.bindBuffer(gl.ARRAY_BUFFER, quadVertexPosBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, quadVertexPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
                 
-                var mMatrix = mat4.create();
-                mat4.identity(mMatrix);
-                mat4.translate(mMatrix, [3.25, 0.0, -9.0]);
-                mvMatrix += mMatrix;
+                var mvMatrix = mat4.create();
+                mat4.identity(mvMatrix);
+                mat4.translate(mvMatrix, [3.25, 0.0, -9.0]);
 
-                mat4.translate(mvMatrix, [0.0, 0.0, -8.0]);
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
 
-                index += quadVertexPosBuffer.numItems;
-                
-                gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
-                gl.drawArrays(gl.TRIANGLE_STRIP, 0, index);
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, quadVertexPosBuffer.numItems);
                 //////////////////////////////////////////////////////////////////////////////////////
             }       
             
