@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebGL Application</title>
+        <meta charset="utf-8">
+        <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+        <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+        <script type="text/javascript" src="webgl-utils.js"></script>
+
+        <script id="shader-vs" type="x-shader/x-vertex">
+            attribute vec3 aVertexPosition;
+            attribute vec4 aVertexColor;
+
+            uniform mat4 uMVMatrix;
+            uniform mat4 uPMatrix;
+
+            varying vec4 vColor;
+
+            void main(void) {
+                gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+                vColor = aVertexColor;
+            }
+        </script>
+        
+        <script id="shader-fs" type="x-shader/x-fragment">
+            precision mediump float;
+            varying vec4 vColor;
+
+            void main(void) {
+                gl_FragColor = vColor;
+            }
+        </script>
+        
+        <script type="text/javascript">
+
+            // Global variables
+            var gl;
+            var canvas;
+            var shaderProgram;
+
+            var triangleVertexPositionBuffer;
+            var rottriangleVertexPositionBuffer;
+            var triangleRGBBuffer;
+            var triangleCMYBuffer;
+
+            var quadVertexPosBuffer;
+            var rotQuadVertexPosBuffer;
+            var quadColorPosBuffer;
+
+            var matrixStack = [];
+
+            //INTERACTION VARS
+            var zoom;
+            var panningMat = mat4.create();
+            mat4.identity(panningMat);
+
+            var rotMat = mat4.create();
+            mat4.identity(rotMat);
+
+            var mouseDown = false;
+            var lastMouseX = null;
+            var lastMouseY = null;
+
+            function initGL()
+            {    
+                canvas = document.getElementById("webGL-canvas");
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                try {
+                    gl = canvas.getContext("experimental-webgl");
+                    gl.viewportWidth = canvas.width;
+                    gl.viewportHeight = canvas.height;
+                } catch (e) {
+                }
+                if (!gl) {
+                    alert("Could not initialise WebGL, sorry :-(");
+                }
+            }
+
+
+            function getShader(id)
+            {
+                var shaderScript = document.getElementById(id);
+                if (!shaderScript) {
+                    return null;
+                }
+
+                var str = "";
+                var k = shaderScript.firstChild;
+                while (k) {
+                    if (k.nodeType == 3) {
+                        str += k.textContent;
+                    }
+                    k = k.nextSibling;
+                }
+
+                var shader;
+                if (shaderScript.type == "x-shader/x-fragment") {
+                    shader = gl.createShader(gl.FRAGMENT_SHADER);
+                } else if (shaderScript.type == "x-shader/x-vertex") {
+                    shader = gl.createShader(gl.VERTEX_SHADER);
+                } else {
+                    return null;
+                }
+
+                gl.shaderSource(shader, str);
+                gl.compileShader(shader);
+
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    alert(gl.getShaderInfoLog(shader));
+                    return null;
+                }
+
+                return shader;
+            }
+
+
+            function initShaders()
+            {
+                var fragmentShader = getShader("shader-fs");
+                var vertexShader = getShader("shader-vs");
+
+                shaderProgram = gl.createProgram();
+                gl.attachShader(shaderProgram, vertexShader);
+                gl.attachShader(shaderProgram, fragmentShader);
+                gl.linkProgram(shaderProgram);
+
+                if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                    alert("Could not initialise shaders");
+                }
+
+                gl.useProgram(shaderProgram);
+
+                shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+                shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+            
+                gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+                gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+
+                shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+                shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+                //shaderProgram.noMatrixUniform = gl.getUniformLocation(shaderProgram, "pMatrix")
+            }
+            
+            function loadSceneOnGPU()
+            {                
+                triangleVertexPositionBuffer = gl.createBuffer();                
+                gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+                
+                var verticesT = [
+                    0.0, 1.0, 0.0,
+                    -1.0, -1.0, 0.0,
+                    1.0, -1.0, 0.0
+                ];
+                
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesT), gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                triangleVertexPositionBuffer.itemSize = 3;
+                triangleVertexPositionBuffer.numItems = 3;   
+
+                rottriangleVertexPositionBuffer = gl.createBuffer();                
+                gl.bindBuffer(gl.ARRAY_BUFFER, rottriangleVertexPositionBuffer);
+                
+                var verticesRT = [
+                    0.0, -1.0, 0.0,
+                    1.0, 1.0, 0.0,
+                    -1.0, 1.0, 0.0
+                ];
+                
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesRT), gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                rottriangleVertexPositionBuffer.itemSize = 3;
+                rottriangleVertexPositionBuffer.numItems = 3;   
+
+                triangleRGBBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, triangleRGBBuffer);
+
+                var colorT1 = [
+                    1.0, 0.0, 0.0, 1.0,     //RED
+                    0.0, 1.0, 0.0, 1.0,     //GREEN 
+                    0.0, 0.0, 1.0, 1.0      //BLUE
+                ];               
+                
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorT1), gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                triangleRGBBuffer.itemSize = 4;
+                triangleRGBBuffer.numItems = 3;   
+
+                triangleCMYBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, triangleCMYBuffer);
+
+                var colorT2 = [
+                    1.0, 1.0, 0.0, 1.0,      //YELLOW
+                    0.0, 1.0, 1.0, 1.0,      //CYAN
+                    1.0, 0.0, 1.0, 1.0       //MAGENTA 
+                ];               
+                
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorT2), gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                triangleCMYBuffer.itemSize = 4;
+                triangleCMYBuffer.numItems = 3;   
+
+                quadVertexPosBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, quadVertexPosBuffer);
+
+                var verticesQ = [
+                   1.0, -1.0, 0.0,
+                   1.0, 1.0, 0.0,
+                  -1.0, -1.0, 0.0,
+                  -1.0, 1.0, 0.0
+                ];
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesQ), gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                quadVertexPosBuffer.itemSize = 3;
+                quadVertexPosBuffer.numItems = 4;
+
+                rotQuadVertexPosBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, rotQuadVertexPosBuffer);
+
+                var verticesRQ = [
+                   0.0, -1.3, 0.0,
+                   1.3, 0.0, 0.0,
+                  -1.3, 0.0, 0.0,
+                   0.0, 1.3, 0.0
+                ];
+
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verticesRQ), gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                rotQuadVertexPosBuffer.itemSize = 3;
+                rotQuadVertexPosBuffer.numItems = 4;
+
+                quadColorPosBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, quadColorPosBuffer);
+
+                var colorQ = [
+                    1.0, 1.0, 0.0, 1.0,     //YELLOW
+                    1.0, 1.0, 0.0, 1.0,     //YELLOW
+                    1.0, 1.0, 0.0, 1.0,     //YELLOW
+                    1.0, 1.0, 0.0, 1.0      //YELLOW
+                ];
+                
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorQ), gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+                quadColorPosBuffer.itemSize = 4;
+                quadColorPosBuffer.numItems = 4;  
+            }
+
+            function handleKeys()
+            {
+                canvas.onmousedown = handleMouseDown;
+                document.onmouseup = handleMouseUp;
+                document.onmousemove = handleMouseMove;
+            }            
+
+            function handleMouseDown(event)
+            {
+                mouseDown = true;
+                if(event.button == 0)//LEFT BUTTON
+                {//ROTATING
+                
+                }           
+                if(event.button == 1)//MID BUTTON
+                {//ZOOM
+                    
+                }              
+                if(event.button == 2)//RIGHT BUTTON
+                {//PANNING
+                    
+                }     
+                lastMouseX = event.clientX;
+                lastMouseY = event.clientY;     
+            }
+            function handleMouseMove(event) 
+            {
+                if(!mouseDown) return;
+
+                if(event.button == 0)//LEFT BUTTON
+                {//ROTATING
+                    var newX = event.clientX;
+                    var newY = event.clientY;
+                    var dx = newX - lastMouseX;
+                    var dy = newY - lastMouseY;
+
+                    var newRot = mat4.create();
+                    mat4.identity(newRot);
+                    mat4.rotate(newRot, (dx/10)*(2*Math.PI/360),[0, 1, 0]);
+                    mat4.rotate(newRot, (dy/10)*(2*Math.PI/360),[1, 0, 0]);
+                    mat4.multiply(newRot, rotMat, rotMat);
+
+                    lastMouseX = newX;
+                    lastMouseY = newY;
+                }
+                if(event.button == 1)
+                {//ZOOM
+                    return;
+                }
+                if(event.button == 2)//RIGHT BUTTON
+                {//PANNING
+                    var newX = event.clientX;
+                    var newY = event.clientY;
+                    var dx = newX - lastMouseX;
+                    var dy = newY - lastMouseY;
+
+                    var newTrans = mat4.create();
+                    mat4.identity(newTrans);
+                    mat4.translate(panningMat, [dx, 0.0, 0.0]);
+                    mat4.translate(panningMat, [0.0, dy, 0.0]);
+                    mat4.multiply(newTrans, panningMat, panningMat);
+
+                    lastMouseX = newX;
+                    lastMouseY = newY;
+                }
+            }
+            function handleMouseUp(event)
+            {
+                mouseDown = false;
+                if(event.button == 0)//LEFT BUTTON
+                {//ROTATING
+                    
+                }
+                if(event.button == 1)//MID BUTTON
+                {//ZOOM
+                    
+                }
+                if(event.button == 2)//RIGHT BUTTON
+                {//PANNING
+                   
+                }
+                lastMouseX = null;
+                lastMouseY = null;
+            }
+            function renderingLoop()
+            {
+                requestAnimationFrame(renderingLoop); //defined in webgl-utils.js
+                handleKeys();
+                drawScene();
+            }
+            // function mvPushMatrix()
+            // {
+            //     var copy =mat4.create();
+            //     mat4.set(mvMatrix, copy);
+            //     matrixStack.push(copy);
+            // }
+            // function mvPopMatrix()
+            // {
+            //     if(matrixStack.length == 0)
+            //     {
+            //         return;
+            //     }
+            //     mvMatrix = matrixStack.pop();
+            // }
+            function drawScene()
+            {
+                gl.enable(gl.DEPTH_TEST);
+
+                gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+
+                gl.clearColor(0.0, 0.0, 0.0, 1.0);
+                gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+                var index = 0;
+
+                var pMatrix = mat4.create();
+                mat4.perspective(50, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+                
+                var mvMatrix = mat4.create();
+                mat4.identity(mvMatrix);
+                ///////////////////////////////////////////////////////////////////////////////////
+                gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER, triangleRGBBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleRGBBuffer.itemSize, gl.FLOAT, false, 0, 0);
+                
+                var mMatrix = mat4.create();
+                mat4.identity(mMatrix);
+                mat4.translate(mMatrix, [0.0, 1.25, -9.0]);  
+                mvMatrix += mMatrix;
+                
+                index += triangleVertexPositionBuffer.numItems;
+                
+                //gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+                
+                //gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+                ////////////////////////////////////////////////////////////////////////////////////
+                gl.bindBuffer(gl.ARRAY_BUFFER, rottriangleVertexPositionBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, rottriangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER, triangleCMYBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, triangleCMYBuffer.itemSize, gl.FLOAT, false, 0, 0);
+                
+                var mMatrix = mat4.create();
+                mat4.identity(mMatrix);
+                mat4.translate(mMatrix, [0.0, -1.0, -9.0]);  
+                mvMatrix += mMatrix;
+                
+                index += rottriangleVertexPositionBuffer.numItems;
+                
+                //gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+                
+                //gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+                //////////////////////////////////////////////////////////////////////////////////////
+                gl.bindBuffer(gl.ARRAY_BUFFER, rotQuadVertexPosBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, rotQuadVertexPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER, quadColorPosBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, quadColorPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
+                
+                var mMatrix = mat4.create();
+                mat4.identity(mMatrix);
+                mat4.translate(mMatrix, [-3.25, 0.0, -9.0]);
+                mvMatrix += mMatrix;
+                
+                index += rotQuadVertexPosBuffer.numItems;
+                
+                //gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+                
+                //gl.drawArrays(gl.TRIANGLE_STRIP, 0, rotQuadVertexPosBuffer.numItems);
+                //////////////////////////////////////////////////////////////////////////////////////
+                gl.bindBuffer(gl.ARRAY_BUFFER, quadVertexPosBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, quadVertexPosBuffer.itemSize, gl.FLOAT, false, 0, 0);
+                
+                var mMatrix = mat4.create();
+                mat4.identity(mMatrix);
+                mat4.translate(mMatrix, [3.25, 0.0, -9.0]);
+                mvMatrix += mMatrix;
+
+                mat4.translate(mvMatrix, [0.0, 0.0, -8.0]);
+                mvMatrix = mat4.multiply(mvMatrix, rotMat);
+
+                index += quadVertexPosBuffer.numItems;
+                
+                gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+                gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+                
+                gl.drawArrays(gl.TRIANGLE_STRIP, 0, index);
+                //////////////////////////////////////////////////////////////////////////////////////
+            }       
+            
+            function webGLStart()
+            {
+                initGL();
+                initShaders();
+                loadSceneOnGPU();
+
+                renderingLoop()            
+            }
+
+        </script>
+
+    </head>
+
+    <body onload="webGLStart();" onresize="webGLStart();">
+        <canvas id="webGL-canvas" style="border: none; width:100%; height:100%; margin: 0 auto;"></canvas>    
+    </body>
+
+</html>
