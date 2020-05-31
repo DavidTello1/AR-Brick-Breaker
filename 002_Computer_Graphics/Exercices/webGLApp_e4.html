@@ -262,10 +262,24 @@
             function handleKeys()
             {
                 canvas.onmousedown = handleMouseDown;
+                canvas.onmousewheel = handleZoom;
                 document.onmouseup = handleMouseUp;
                 document.onmousemove = handleMouseMove;
+                document.onkeydown = reset;
             }            
-
+            function reset(event)
+            {
+                if(event.keyCode == 82)
+                {
+                    mat4.identity(panningMat);
+                    mat4.identity(rotMat);
+                    //reset zoom missing
+                    mouseDown = false;
+                    lastMouseX = null;
+                    lastMouseY = null;
+                    console.log("reset done");
+                }
+            }
             function handleMouseDown(event)
             {
                 mouseDown = true;                
@@ -278,18 +292,22 @@
                     rotate = true;
                     return;
                 }           
-                else if(event.button == 1)//MID BUTTON
-                {//ZOOM
-                    console.log("mid button pressed");
-                    zoom = true;
-                    return;
-                }              
                 else if(event.button == 2)//RIGHT BUTTON
                 {//PANNING
                     console.log("right button pressed");
                     panning = true;
                     return;
                 }     
+            }
+            function handleZoom(WheelEvent)
+            {
+                //ZOOM               
+                zooming += WheelEvent.deltaZ;
+                
+                console.log("applying zooming");
+                console.log(zooming);
+                return;
+            
             }
             function handleMouseMove(event) 
             {
@@ -311,18 +329,6 @@
                     lastMouseX = newX;
                     lastMouseY = newY;
                     console.log("applying rotation");
-                    return;
-                }
-                else if(zoom == true)
-                {//ZOOM
-                    var newY = event.clientY;
-                    var dy = newY - lastMouseY;
-
-                    zooming += dy;
-                    lastMouseY = newY;
-
-                    console.log("applying zooming");
-                    console.log(zooming);
                     return;
                 }
                 else if(panning == true)//RIGHT BUTTON
@@ -354,12 +360,6 @@
                 {//ROTATING
                     console.log("left button released");
                     rotate = false;
-                    return;
-                }
-                else if(zoom == true)//MID BUTTON
-                {//ZOOM
-                    console.log("mid button released");
-                    zoom = false;
                     return;
                 }
                 else if(panning == true)//RIGHT BUTTON
@@ -399,7 +399,7 @@
                 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
                 var pMatrix = mat4.create();
-                mat4.perspective(100, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+                mat4.perspective(50, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
                 pMatrix = mat4.multiply(pMatrix, panningMat);
                 mat4.translate(pMatrix, [0.0 ,0.0 ,zooming]);
                 
