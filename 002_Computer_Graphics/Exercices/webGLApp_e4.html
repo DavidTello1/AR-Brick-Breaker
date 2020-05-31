@@ -62,6 +62,10 @@
             var lastMouseX = null;
             var lastMouseY = null;
 
+            var panning = false;
+            var rotate = false;
+            var zoom = false;
+
             function initGL()
             {    
                 canvas = document.getElementById("webGL-canvas");
@@ -270,16 +274,19 @@
                 if(event.button == 0)//LEFT BUTTON
                 {//ROTATING
                     console.log("left button pressed");
+                    rotate = true;
                     return;
                 }           
                 else if(event.button == 1)//MID BUTTON
                 {//ZOOM
                     console.log("mid button pressed");
+                    zoom = true;
                     return;
                 }              
                 else if(event.button == 2)//RIGHT BUTTON
                 {//PANNING
                     console.log("right button pressed");
+                    panning = true;
                     return;
                 }     
             }
@@ -287,7 +294,7 @@
             {
                 if(mouseDown == false) return;
 
-                if(event.button == 0)//LEFT BUTTON
+                if(event.button == 0 && rotate == true)//LEFT BUTTON
                 {//ROTATING
                     var newX = event.clientX;
                     var newY = event.clientY;
@@ -305,12 +312,12 @@
                     console.log("applying rotation");
                     return;
                 }
-                else if(event.button == 1)
+                else if(event.button == 1 && zoom == true)
                 {//ZOOM
                     console.log("applying zooming");
                     return;
                 }
-                else if(event.button == 2)//RIGHT BUTTON
+                else if(event.button == 2 && panning == true)//RIGHT BUTTON
                 {//PANNING
                     var newX = event.clientX;
                     var newY = event.clientY;
@@ -338,16 +345,19 @@
                 if(event.button == 0)//LEFT BUTTON
                 {//ROTATING
                     console.log("left button released");
+                    rotate = false;
                     return;
                 }
                 else if(event.button == 1)//MID BUTTON
                 {//ZOOM
                     console.log("mid button released");
+                    zoom = false;
                     return;
                 }
                 else if(event.button == 2)//RIGHT BUTTON
                 {//PANNING
                     console.log("right button released");
+                    panning = false;
                     return;
                 }
             }
@@ -397,6 +407,7 @@
                 mat4.translate(mvMatrix, [0.0, 1.25, -9.0]);  
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
+                mvMatrix = mat4.multiply(mvMatrix, panningMat);
                 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
@@ -413,6 +424,7 @@
                 mat4.translate(mvMatrix, [0.0, -1.0, -9.0]);  
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
+                mvMatrix = mat4.multiply(mvMatrix, panningMat);
                 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
@@ -429,6 +441,7 @@
                 mat4.translate(mvMatrix, [-3.25, 0.0, -9.0]);
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
+                mvMatrix = mat4.multiply(mvMatrix, panningMat);
                             
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
@@ -442,6 +455,7 @@
                 mat4.translate(mvMatrix, [3.25, 0.0, -9.0]);
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
+                mvMatrix = mat4.multiply(mvMatrix, panningMat);
 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 

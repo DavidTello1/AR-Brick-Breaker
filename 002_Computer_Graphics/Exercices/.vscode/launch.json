@@ -3,15 +3,14 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [        
+    "configurations": [         
 
-        
         
         {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome",
-            "url": "file:///C:/Users/oriol/Desktop/Tercer%20Curs/Second%20Semester/Augmented%20Reality/002_Computer_Graphics/Exercices/",
+            "url": "file:///C:/Users/oriol/Documents/GitHub/AR-Brick-Breaker/002_Computer_Graphics/Exercices/",
             "webRoot": "${workspaceFolder}"
         },
         {
