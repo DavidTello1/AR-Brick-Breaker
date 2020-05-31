@@ -317,7 +317,7 @@
                     console.log("applying zooming");
                     return;
                 }
-                else if(event.button == 2 && panning == true)//RIGHT BUTTON
+                else if(panning == true)//RIGHT BUTTON
                 {//PANNING
                     var newX = event.clientX;
                     var newY = event.clientY;
@@ -326,8 +326,8 @@
 
                     var newTrans = mat4.create();
                     mat4.identity(newTrans);
-                    mat4.translate(panningMat, [dx, 0.0, 0.0]);
-                    mat4.translate(panningMat, [0.0, dy, 0.0]);
+                    mat4.translate(panningMat, [dx/50, 0.0, 0.0]);
+                    mat4.translate(panningMat, [0.0, -dy/50, 0.0]);
                     mat4.multiply(newTrans, panningMat, panningMat);
 
                     lastMouseX = newX;
@@ -392,6 +392,7 @@
 
                 var pMatrix = mat4.create();
                 mat4.perspective(50, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+                pMatrix = mat4.multiply(pMatrix, panningMat);
                 
                 gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
 
@@ -407,7 +408,7 @@
                 mat4.translate(mvMatrix, [0.0, 1.25, -9.0]);  
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                mvMatrix = mat4.multiply(mvMatrix, panningMat);
+                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
                 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
@@ -424,7 +425,7 @@
                 mat4.translate(mvMatrix, [0.0, -1.0, -9.0]);  
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                mvMatrix = mat4.multiply(mvMatrix, panningMat);
+                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
                 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
@@ -441,7 +442,7 @@
                 mat4.translate(mvMatrix, [-3.25, 0.0, -9.0]);
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                mvMatrix = mat4.multiply(mvMatrix, panningMat);
+                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
                             
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
@@ -455,7 +456,7 @@
                 mat4.translate(mvMatrix, [3.25, 0.0, -9.0]);
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                mvMatrix = mat4.multiply(mvMatrix, panningMat);
+                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
