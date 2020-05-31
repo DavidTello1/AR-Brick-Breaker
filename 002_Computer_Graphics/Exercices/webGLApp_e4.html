@@ -51,7 +51,8 @@
             var matrixStack = [];
 
             //INTERACTION VARS
-            var zoom;
+            var zoom = 0;
+
             var panningMat = mat4.create();
             mat4.identity(panningMat);
 
@@ -312,8 +313,15 @@
                     console.log("applying rotation");
                     return;
                 }
-                else if(event.button == 1 && zoom == true)
+                else if(zoom == true)
                 {//ZOOM
+                    var newY = event.clientY;
+                    var dy = newY - lastMouseY;
+
+                    zoom = dy;
+
+                    lastMouseY = newY;
+
                     console.log("applying zooming");
                     return;
                 }
@@ -348,13 +356,13 @@
                     rotate = false;
                     return;
                 }
-                else if(event.button == 1)//MID BUTTON
+                else if(zoom == true)//MID BUTTON
                 {//ZOOM
                     console.log("mid button released");
                     zoom = false;
                     return;
                 }
-                else if(event.button == 2)//RIGHT BUTTON
+                else if(panning == true)//RIGHT BUTTON
                 {//PANNING
                     console.log("right button released");
                     panning = false;
@@ -391,11 +399,10 @@
                 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
                 var pMatrix = mat4.create();
-                mat4.perspective(50, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+                mat4.perspective(50+zoom, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
                 pMatrix = mat4.multiply(pMatrix, panningMat);
                 
                 gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
-
                 ///////////////////////////////////////////////////////////////////////////////////
                 gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
                 gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -408,7 +415,6 @@
                 mat4.translate(mvMatrix, [0.0, 1.25, -9.0]);  
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
                 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
@@ -425,8 +431,7 @@
                 mat4.translate(mvMatrix, [0.0, -1.0, -9.0]);  
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
-                
+
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
                 gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
@@ -442,8 +447,7 @@
                 mat4.translate(mvMatrix, [-3.25, 0.0, -9.0]);
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
-                            
+
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
                 gl.drawArrays(gl.TRIANGLE_STRIP, 0, rotQuadVertexPosBuffer.numItems);
@@ -456,7 +460,6 @@
                 mat4.translate(mvMatrix, [3.25, 0.0, -9.0]);
 
                 mvMatrix = mat4.multiply(mvMatrix, rotMat);
-                //mvMatrix = mat4.multiply(mvMatrix, panningMat);
 
                 gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
                 
